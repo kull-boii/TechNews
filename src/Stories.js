@@ -1,24 +1,9 @@
 import React, { useEffect } from "react";
 
+import { useGlobalContext } from "./context";
+
 const Stories = () => {
-  let isLoading = true;
-
-  let API = "http://hn.algolia.com/api/v1/search?query=html";
-
-  const fetchAPiData = async (url) => {
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      console.log(data);
-      //   isLoading = false;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchAPiData(API);
-  }, []);
+  const { hits, nbPages, isLoading } = useGlobalContext();
 
   if (isLoading) {
     return (
@@ -31,6 +16,9 @@ const Stories = () => {
   return (
     <>
       <h2>My tech news Post</h2>
+      {hits.map((currPost) => {
+        return <h2>{currPost.title}</h2>;
+      })}
     </>
   );
 };
